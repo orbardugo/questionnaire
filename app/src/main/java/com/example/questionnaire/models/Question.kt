@@ -3,16 +3,16 @@ package com.example.questionnaire.models
 import com.google.gson.annotations.SerializedName
 
 data class Question (
-    @SerializedName("id")
+//    @SerializedName("id")
     val id: Int,
-    @SerializedName("questionType")
+//    @SerializedName("questionType")
     val questionType: Int,
-    @SerializedName("title")
+//    @SerializedName("title")
     val title: String,
-    @SerializedName("answers")
-    val answers: ArrayList<Answer>,
-    @SerializedName("isRequired")
+//    @SerializedName("answers")
+//    val answers: List<Answer>,
+//    @SerializedName("isRequired")
     val isRequired: Boolean,
-    @SerializedName("correctAnswerId")
+//    @SerializedName("correctAnswerId")
     val correctAnswerId: Int?,
 )

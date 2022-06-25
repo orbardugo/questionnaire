@@ -3,10 +3,10 @@ package com.example.questionnaire.models
 import com.google.gson.annotations.SerializedName
 
 data class Answer(
-    @SerializedName("id")
+//    @SerializedName("id")
     val id: Int,
-    @SerializedName("answerText")
-    val answerText: String,
+//    @SerializedName("answerText")
+    val answerText: String
 
-    var questionId: Int = -1
+//    var questionId: Int = -1
 )
