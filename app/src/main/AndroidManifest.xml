@@ -14,7 +14,7 @@
         android:theme="@style/Theme.Questionnaire"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".modules.questionnaireModule.activities.MainActivity"
+            android:name=".modules.questionnaire_module.activities.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

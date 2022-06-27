@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/questionnaireFragment"
-        android:name="com.example.questionnaire.modules.questionnaireModule.fragments.QuestionnaireFragment"
+        android:name="com.example.questionnaire.modules.questionnaire_module.fragments.QuestionnaireFragment"
         android:label="fragment_questionnaire"
         tools:layout="@layout/fragment_questionnaire">
     </fragment>

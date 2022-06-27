@@ -1,4 +1,4 @@
-package com.example.questionnaire.modules.questionnaireModule.activities
+package com.example.questionnaire.modules.questionnaire_module.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

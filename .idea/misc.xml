@@ -5,6 +5,10 @@
       <map>
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.17239583333333333" />
         <entry key="app/src/main/res/layout/fragment_questionnaire.xml" value="0.17239583333333333" />
+        <entry key="app/src/main/res/layout/multi_choice_question_card_item.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/open_question_card_item.xml" value="0.340625" />
+        <entry key="app/src/main/res/layout/submit_item.xml" value="0.14114583333333333" />
+        <entry key="app/src/main/res/layout/title_card_item.xml" value="0.340625" />
       </map>
     </option>
   </component>
