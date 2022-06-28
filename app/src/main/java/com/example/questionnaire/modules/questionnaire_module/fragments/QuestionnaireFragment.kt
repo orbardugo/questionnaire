@@ -8,17 +8,18 @@ import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewbinding.ViewBinding
+import com.example.questionnaire.R
 import com.example.questionnaire.base.BindingFragment
 import com.example.questionnaire.base.Response
 import com.example.questionnaire.databinding.FragmentQuestionnaireBinding
 import com.example.questionnaire.models.Answer
 import com.example.questionnaire.models.Question
-import com.example.questionnaire.modules.adapters.DataModel
 import com.example.questionnaire.modules.adapters.QuestionnaireRecyclerViewAdapter
 import com.example.questionnaire.modules.interfaces.SubmitListener
 import com.example.questionnaire.modules.questionnaire_module.viewModels.QuestionnaireViewModel
 import com.example.questionnaire.utils.VerticalSpaceItemDecoration
 import com.example.questionnaire.utils.dpToPx
+import com.example.questionnaire.utils.hideKeyboard
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -48,7 +49,9 @@ class QuestionnaireFragment : BindingFragment<FragmentQuestionnaireBinding>(), S
         binding.questionnaireRecyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())
             this.adapter = questionnaireRecyclerViewAdapter
-            this.addItemDecoration(VerticalSpaceItemDecoration(16.dpToPx()))
+            if (binding.questionnaireRecyclerView.itemDecorationCount < 1) {
+                this.addItemDecoration(VerticalSpaceItemDecoration(16.dpToPx()))
+            }
         }
     }
 
@@ -61,7 +64,6 @@ class QuestionnaireFragment : BindingFragment<FragmentQuestionnaireBinding>(), S
             displayAnswersResponse(response)
         }
     }
-
 
 
     private fun displayQuestions(response: Response<ArrayList<Question>>) {
@@ -106,10 +108,14 @@ class QuestionnaireFragment : BindingFragment<FragmentQuestionnaireBinding>(), S
     }
 
     override fun onSubmit(answerList: ArrayList<Answer>) {
+        hideKeyboard()
         viewModel.sendAnswers(answerList)
     }
 
     override fun onNotAllRequiredQuestionsAnswered() {
-        Toast.makeText(requireContext(), "Please answer all required questions!!!", Toast.LENGTH_LONG).show()
+        hideKeyboard()
+        Toast.makeText(requireContext(),
+            getString(R.string.answer_all_required),
+            Toast.LENGTH_LONG).show()
     }
 }

@@ -2,7 +2,7 @@ package com.example.questionnaire.models
 
 import com.google.gson.annotations.SerializedName
 
-data class Question (
+data class Question(
     @SerializedName("id")
     val id: Int,
     @SerializedName("questionType")
@@ -17,23 +17,12 @@ data class Question (
     val correctAnswerId: Int?,
 ) {
     fun getAnswerById(answerId: Int): Answer? {
-        for(answer in answers){
-            if (answer.id == answerId){
+        for (answer in answers) {
+            if (answer.id == answerId) {
                 answer.questionId = id
                 return answer
             }
         }
         return null
     }
-
-    fun getOtherAnswerId(): Answer? {
-        for(answer in answers){
-            if (answer.answerText.isEmpty()){
-                answer.questionId = id
-                return answer
-            }
-        }
-        return null
-    }
-
 }

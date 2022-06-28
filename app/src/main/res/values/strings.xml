@@ -8,4 +8,6 @@
     <string name="required_sign">*</string>
     <string name="answer_edit_text_placeholder">Your answer</string>
     <string name="submit">Submit</string>
+    <string name="other">other</string>
+    <string name="answer_all_required">Please answer all required questions!!!</string>
 </resources>

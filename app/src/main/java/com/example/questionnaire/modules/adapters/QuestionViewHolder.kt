@@ -4,6 +4,7 @@ import android.view.View
 import android.widget.RadioButton
 import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.RecyclerView
+import com.example.questionnaire.R
 import com.example.questionnaire.databinding.MultiChoiceQuestionCardItemBinding
 import com.example.questionnaire.databinding.OpenQuestionCardItemBinding
 import com.example.questionnaire.databinding.SubmitItemBinding
@@ -13,14 +14,12 @@ import com.example.questionnaire.modules.interfaces.QuestionAnsweredListener
 class QuestionViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     private fun bindHeader(item: DataModel.Header, listener: QuestionAnsweredListener) {
-        //Do your view assignment here from the data model
     }
 
     private fun bindMultiChoiceQuestion(
         item: DataModel.MultiChoiceQuestion,
         listener: QuestionAnsweredListener,
     ) {
-        //Do your view assignment here from the data model
         val binding = MultiChoiceQuestionCardItemBinding.bind(itemView)
         binding.questionTitle.text = item.question.title
         if (item.question.isRequired) {
@@ -37,7 +36,7 @@ class QuestionViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                     text = answer.answerText
                     id = answer.id
                 }
-                binding.answersGroup.addView(radioButton, 0)
+                binding.answersGroup.addView(radioButton, binding.answersGroup.childCount -1)
             }
         }
 
@@ -45,9 +44,12 @@ class QuestionViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             run {
                 var radioButton: RadioButton = itemView.findViewById(checkId)
                 val selectedAnswer: Answer? = item.question.getAnswerById(checkId)
-                if(radioButton.text != "other") {
-                    binding.openText.text.clear()
+                if (radioButton.text != "${itemView.resources.getString(R.string.other)}:") {
                     binding.openText.clearFocus()
+                    binding.openText.isEnabled = false
+                } else {
+                    binding.openText.isEnabled = true
+                    binding.openText.requestFocus()
                 }
                 if (selectedAnswer != null) {
                     listener.questionAnswered(selectedAnswer,
@@ -58,9 +60,10 @@ class QuestionViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         }
         binding.openText.doOnTextChanged { text, _, _, _ ->
             run {
-                val selectedAnswer: Answer? = item.question.getAnswerById(binding.answersGroup.checkedRadioButtonId)
+                val selectedAnswer: Answer? =
+                    item.question.getAnswerById(binding.answersGroup.checkedRadioButtonId)
                 selectedAnswer?.answerText =
-                   text.toString().ifEmpty { "other" }
+                    text.toString().ifEmpty { itemView.resources.getString(R.string.other) }
                 if (selectedAnswer != null) {
                     listener.questionAnswered(selectedAnswer,
                         item.question.isRequired,
@@ -82,6 +85,7 @@ class QuestionViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                     listener.removeAnswer(item.question.isRequired, adapterPosition)
                 } else {
                     val answer = item.question.answers[0]
+                    answer.questionId = item.question.id
                     answer.answerText = text.toString()
                     listener.questionAnswered(answer,
                         item.question.isRequired,

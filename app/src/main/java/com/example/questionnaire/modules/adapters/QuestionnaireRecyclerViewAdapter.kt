@@ -9,7 +9,8 @@ import com.example.questionnaire.models.Answer
 import com.example.questionnaire.modules.interfaces.QuestionAnsweredListener
 import com.example.questionnaire.modules.interfaces.SubmitListener
 
-class QuestionnaireRecyclerViewAdapter() : RecyclerView.Adapter<QuestionViewHolder>(), QuestionAnsweredListener {
+class QuestionnaireRecyclerViewAdapter() : RecyclerView.Adapter<QuestionViewHolder>(),
+    QuestionAnsweredListener {
     companion object {
         private const val TYPE_HEADER = 0
         private const val TYPE_MULTI_CHOICE = 1
@@ -25,7 +26,7 @@ class QuestionnaireRecyclerViewAdapter() : RecyclerView.Adapter<QuestionViewHold
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
-        viewType: Int
+        viewType: Int,
     ): QuestionViewHolder {
 
         val layout = when (viewType) {
@@ -46,14 +47,9 @@ class QuestionnaireRecyclerViewAdapter() : RecyclerView.Adapter<QuestionViewHold
 
     override fun onBindViewHolder(
         holder: QuestionViewHolder,
-        position: Int
+        position: Int,
     ) {
         holder.bind(adapterData[position], this)
-//        when (adapterData[position]) {
-//            is DataModel.MultiChoiceQuestion -> {
-//            }
-//            is DataModel.OpenQuestion -> {}
-//        }
     }
 
     override fun getItemCount(): Int = adapterData.size
@@ -67,13 +63,13 @@ class QuestionnaireRecyclerViewAdapter() : RecyclerView.Adapter<QuestionViewHold
         }
     }
 
-    fun setData(data: List<DataModel>, numOfRequiredQuestions: Int,) {
+    fun setData(data: List<DataModel>, numOfRequiredQuestions: Int) {
         adapterData.apply {
             clear()
             addAll(data)
         }
         adapterData.add(0, DataModel.Header())
-        adapterData.add( DataModel.Submit())
+        adapterData.add(DataModel.Submit())
         requiredQuestionAnsweredCounter = 0
         this.numOfRequiredQuestions = numOfRequiredQuestions
         answersData.clear()
@@ -83,16 +79,20 @@ class QuestionnaireRecyclerViewAdapter() : RecyclerView.Adapter<QuestionViewHold
         submitListener = listener
     }
 
-    override fun questionAnswered(answer: Answer, isQuestionRequired: Boolean, questionPosition: Int) {
-        if(isQuestionRequired && !answersData.containsKey(questionPosition)) {
+    override fun questionAnswered(
+        answer: Answer,
+        isQuestionRequired: Boolean,
+        questionPosition: Int,
+    ) {
+        if (isQuestionRequired && !answersData.containsKey(questionPosition)) {
             requiredQuestionAnsweredCounter++
         }
         answersData[questionPosition] = answer
     }
 
     override fun removeAnswer(isQuestionRequired: Boolean, questionPosition: Int) {
-        if(answersData.containsKey(questionPosition)) {
-            if(isQuestionRequired) {
+        if (answersData.containsKey(questionPosition)) {
+            if (isQuestionRequired) {
                 requiredQuestionAnsweredCounter--
             }
             answersData.remove(questionPosition)

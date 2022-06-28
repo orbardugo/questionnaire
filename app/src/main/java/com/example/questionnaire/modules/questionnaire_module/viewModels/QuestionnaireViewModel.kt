@@ -1,11 +1,12 @@
 package com.example.questionnaire.modules.questionnaire_module.viewModels
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.questionnaire.base.Response
+import com.example.questionnaire.constants.Constants.REACH_SERVER_ERROR
+import com.example.questionnaire.constants.Constants.UNEXPECTED_ERROR
 import com.example.questionnaire.models.Answer
 import com.example.questionnaire.models.Question
 import com.example.questionnaire.modules.adapters.DataModel
@@ -17,7 +18,8 @@ import java.io.IOException
 import javax.inject.Inject
 
 @HiltViewModel
-class QuestionnaireViewModel @Inject constructor( private val repository: QuestionnaireRepository) : ViewModel() {
+class QuestionnaireViewModel @Inject constructor(private val repository: QuestionnaireRepository) :
+    ViewModel() {
     private val _questionsList: MutableLiveData<Response<ArrayList<Question>>> = MutableLiveData()
     private val _sendAnswersState: MutableLiveData<Response<Boolean>> = MutableLiveData()
 
@@ -34,9 +36,9 @@ class QuestionnaireViewModel @Inject constructor( private val repository: Questi
             try {
                 _questionsList.value = Response.Success(ArrayList(repository.getQuestions()))
             } catch (e: HttpException) {
-                _questionsList.value = Response.Error(e.localizedMessage ?: "An unexpected error occurred")
-            } catch (e: IOException){
-                _questionsList.value = Response.Error("Couldn't reach server. Check your internet connection")
+                _questionsList.value = Response.Error(e.localizedMessage ?: UNEXPECTED_ERROR)
+            } catch (e: IOException) {
+                _questionsList.value = Response.Error(REACH_SERVER_ERROR)
             }
         }
     }
@@ -46,11 +48,13 @@ class QuestionnaireViewModel @Inject constructor( private val repository: Questi
         viewModelScope.launch {
             try {
                 repository.sendAnswers(answers)
-                _sendAnswersState.value =  Response.Success(true)
+                _sendAnswersState.value = Response.Success(true)
             } catch (e: HttpException) {
-                _sendAnswersState.value = Response.Error( e.localizedMessage ?: "An unexpected error occurred")
+                _sendAnswersState.value =
+                    Response.Error(e.localizedMessage ?: UNEXPECTED_ERROR)
             } catch (e: IOException) {
-                _sendAnswersState.value = Response.Error( "Couldn't reach server. Check your internet connection")
+                _sendAnswersState.value =
+                    Response.Error(REACH_SERVER_ERROR)
             }
         }
     }
@@ -59,7 +63,7 @@ class QuestionnaireViewModel @Inject constructor( private val repository: Questi
         fetchQuestions()
     }
 
-    fun transformArrayListOfQuestionsToDataModelList(arraylist: ArrayList<Question>) : List<DataModel> {
+    fun transformArrayListOfQuestionsToDataModelList(arraylist: ArrayList<Question>): List<DataModel> {
         return arraylist.map { question ->
             when (question.questionType) {
                 1 -> DataModel.MultiChoiceQuestion(question)
@@ -73,7 +77,7 @@ class QuestionnaireViewModel @Inject constructor( private val repository: Questi
     fun getNumOfRequiredQuestions(questions: ArrayList<Question>): Int {
         var counter = 0;
         for (question in questions) {
-            if(question.isRequired){
+            if (question.isRequired) {
                 counter++
             }
         }
