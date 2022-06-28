@@ -31,8 +31,11 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideQuestionnaireRepository(api: QuestionnaireApi): QuestionnaireRepository {
-        return QuestionnaireRepositoryImpl(api)
+    fun provideQuestionnaireRepository(
+        api: QuestionnaireApi,
+        dispatcherProvider: DispatcherProvider,
+    ): QuestionnaireRepository {
+        return QuestionnaireRepositoryImpl(api, dispatcherProvider)
     }
 
     @Singleton

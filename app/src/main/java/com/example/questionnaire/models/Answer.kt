@@ -6,7 +6,7 @@ data class Answer(
     @SerializedName("id")
     val id: Int,
     @SerializedName("answerText")
-    val answerText: String,
+    var answerText: String,
 
     var questionId: Int = -1
 )
